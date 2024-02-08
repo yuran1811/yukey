@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'MononokiNerdFont';
+  src: url('/fonts/MononokiNerdFont-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MononokiNerdFont';
+  src: url('/fonts/MononokiNerdFont-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+:root {
+  --black: #0f0f0f;
+
+  font-family: MononokiNerdFont, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+
+  color: var(--black);
+  background-color: transparent;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+@layer base {
+  * {
+    @apply select-none;
+  }
+
+  body {
+    @apply flexcenter overflow-hidden;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply flexcenter relative h-8 w-8 rounded-full p-2 text-lg text-white transition-colors duration-300 hover:bg-white/20;
+
+    &-close {
+      @apply btn text-red-400 hover:bg-red-400/20;
+    }
+
+    &-hide {
+      @apply btn text-sky-400 hover:bg-sky-400/20;
+    }
+
+    &-theme {
+      @apply btn text-violet-400 hover:bg-violet-400/20;
+    }
+
+    &-pin {
+      @apply btn text-orange-400 hover:bg-orange-400/20;
+
+      &.active {
+        @apply bg-orange-400/20;
+      }
+    }
+  }
+
+  .main-background {
+    @apply bg-[rgba(0,0,0,0.8)];
+  }
+
+  .ticker-container {
+    @apply relative flex w-80 flex-col text-xl text-gray-200;
+  }
+
+  .tickers {
+    @apply main-background flexcenter pointer-events-none w-full gap-1 overflow-hidden rounded-t-2xl px-6 py-9 shadow-xl;
+  }
+
+  .ticker-item {
+    font-size: 2.4rem;
+  }
+
+  .modifier-keycaps {
+    @apply mt-0.5 grid grid-cols-4 gap-0.5;
+  }
+
+  .keycap {
+    @apply text-center shadow-md;
+    padding: 0.625rem 1rem;
+
+    &:first-child {
+      @apply rounded-bl-2xl;
+    }
+
+    &:last-child {
+      @apply rounded-br-2xl;
+    }
+  }
+}
+
+@layer utilities {
+  .flexcenter {
+    @apply flex items-center justify-center;
+  }
+
+  .flexcentercol {
+    @apply flexcenter flex-col;
+  }
+}

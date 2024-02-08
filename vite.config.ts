@@ -1,0 +1,27 @@
+import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { PluginOption, defineConfig } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
+
+export default defineConfig(async () => ({
+  plugins: [
+    react(),
+    tsconfigPaths(),
+    visualizer({
+      template: 'sunburst', // "sunburst" | "treemap" | "flamegraph"
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+      filename: 'analyse.html',
+    }) as PluginOption,
+  ],
+
+  clearScreen: false,
+  server: {
+    port: 1420,
+    strictPort: true,
+    watch: {
+      ignored: ['**/src-tauri/**'],
+    },
+  },
+}));
