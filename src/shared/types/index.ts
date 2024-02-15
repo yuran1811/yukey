@@ -3,3 +3,8 @@ export interface ModifierKeyType {
   id: string[];
   active: boolean;
 }
+
+export interface KeyPressPayload {
+  message: string;
+  mode: string;
+}

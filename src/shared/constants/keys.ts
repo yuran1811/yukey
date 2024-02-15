@@ -3,7 +3,13 @@ export const shiftKeys = ['ShiftLeft', 'ShiftRight'];
 export const metaKeys = ['MetaLeft', 'MetaRight'];
 export const altKeys = ['Alt', 'AltGr'];
 
-export const specialKeysObj: Record<string, string> = {
+export const MOUSE_BUTTONS: Record<string, number> = {
+  Left: -1,
+  Middle: 0,
+  Right: 1,
+};
+
+export const SPECIAL_KEYS: Record<string, string> = {
   PrintScreen: '⎙',
   ScrollLock: 'ScrLk',
   Pause: 'Pause',
@@ -37,7 +43,7 @@ export const specialKeysObj: Record<string, string> = {
   MetaLeft: '⊞',
   MetaRight: '⊞',
   ContextMenu: '≣',
-  
+
   Minus: '-',
   Equal: '=',
   SemiColon: ';',
@@ -47,7 +53,7 @@ export const specialKeysObj: Record<string, string> = {
   Slash: '/',
 };
 
-export const controlKeyCodes = [
+export const CONTROL_KEYCODES = [
   '@',
   'A',
   'B',
