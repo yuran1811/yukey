@@ -8,7 +8,18 @@ interface SettingsType {
   mergeDuplicates: boolean;
 }
 
-type ThemeVariants = 'light' | 'dark' | 'violet' | 'slate';
+type ThemeVariants =
+  | 'light'
+  | 'dark'
+  | 'slate'
+  | 'red'
+  | 'orange'
+  | 'yellow'
+  | 'green'
+  | 'blue'
+  | 'violet'
+  | 'sakura'
+  ;
 
 interface StoreType {
   settings: SettingsType;

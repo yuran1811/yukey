@@ -1,40 +1,23 @@
+@import './styles/fonts.css';
+@import './styles/themes.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'MononokiNerdFont';
-  src: url('/fonts/MononokiNerdFont-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'MononokiNerdFont';
-  src: url('/fonts/MononokiNerdFont-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-}
-
-:root {
-  --black: #0f0f0f;
-
-  font-family: MononokiNerdFont, Avenir, Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-
-  color: var(--black);
-  background-color: transparent;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
 @layer base {
+  :root {
+    @apply antialiased;
+    @apply bg-transparent text-[hsl(var(--foreground))];
+    @apply font-normal leading-6;
+
+    font-family: Fredoka, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+  }
+
   * {
     @apply select-none;
   }
@@ -46,7 +29,7 @@
 
 @layer components {
   .btn {
-    @apply flexcenter relative h-8 w-8 rounded-full p-2 text-lg text-white transition-colors duration-300 hover:bg-white/20;
+    @apply flexcenter relative h-8 w-8 rounded-full p-2 text-lg text-[hsl(var(--foreground))] transition-colors duration-300 hover:bg-[hsl(var(--foreground))]/20;
 
     &-close {
       @apply btn text-red-400 hover:bg-red-400/20;
@@ -70,19 +53,21 @@
   }
 
   .main-background {
-    @apply bg-[rgba(0,0,0,0.8)];
+    @apply bg-[hsl(var(--primary))]/80 text-[hsl(var(--primary-foreground))];
   }
 
-  .ticker-container {
-    @apply relative flex w-80 flex-col text-xl text-gray-200;
-  }
+  .ticker {
+    &-container {
+      @apply relative flex w-80 flex-col text-xl text-[hsl(var(--primary-foreground))];
+    }
 
-  .tickers {
-    @apply main-background flexcenter pointer-events-none w-full gap-1 overflow-hidden rounded-t-2xl px-6 py-9 shadow-xl;
-  }
+    &-wrapper {
+      @apply main-background flexcenter pointer-events-none w-full gap-1 overflow-hidden rounded-t-2xl px-6 py-9 shadow-xl;
+    }
 
-  .ticker-item {
-    font-size: 2.4rem;
+    &-item {
+      font-size: 2.4rem;
+    }
   }
 
   .modifier-keycaps {
@@ -90,8 +75,7 @@
   }
 
   .keycap {
-    @apply text-center shadow-md;
-    padding: 0.625rem 1rem;
+    @apply px-4 py-3 text-center shadow-md;
 
     &:first-child {
       @apply rounded-bl-2xl;
