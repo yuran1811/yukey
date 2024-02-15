@@ -1,4 +1,4 @@
-<h1 align="center" style="font-size: 54px">YuKey (Official)</h1>
+<h1 align="center" style="font-size: 52px">YuKey (Official)</h1>
 
 <p align="center" style="font-size: 16px"><strong>A minimal, blazing fast Tauri application record the key you're typing.</strong></p>
 
@@ -12,16 +12,18 @@
   <img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg">
 </p>
 
-## Releases
+### Releases
 
 - Official releases can be found [here](https://github.com/yuran1811/yukey/releases)
 
 ### Features
 
-- Record the key you're typing
-- Pin the app on top of the screen
-- Theme UI changing
-- Minmize to tray
+- [x] Record the key you're typing
+- [ ] Record the mouse button you've clicked
+- [x] Pin the app on top of the screen
+- [x] Minmize to tray
+- [ ] Theme UI changing
+- [ ] Setting panel
 
 ### Technologies
 
