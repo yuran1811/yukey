@@ -23,7 +23,10 @@ fn callback<F: Fn(&str, &str)>(event: Event, emit: &F) {
                 let key_str = format!("{:?}", key);
                 emit("KeyRelease", &key_str);
             }
-            EventType::MouseMove { .. } => {}
+            EventType::ButtonPress(button) => {
+                let button_str = format!("{:?}", button);
+                emit("ButtonPress", &button_str);
+            }
             _ => {}
         },
     }

@@ -1,12 +1,12 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod keyboard_listener;
+mod input_listener;
 
 use tauri::Manager;
 use tauri::{CustomMenuItem, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem};
 
 #[derive(Clone, serde::Serialize)]
-struct Payload {
+struct InputPayload {
     mode: String,
     message: String,
 }
@@ -28,20 +28,20 @@ fn main() {
 
     tauri::Builder::default()
         .setup(move |app| {
-            let wv = app.get_window("main").unwrap();
+            let window = app.get_window("main").unwrap();
 
             std::thread::spawn(move || {
-                keyboard_listener::run_listener(move |s: &str, s1: &str| {
-                    if let Err(err) = wv.emit(
-                        "keypress",
-                        Payload {
+                input_listener::run_listener(move |s: &str, s1: &str| {
+                    if let Err(err) = window.emit(
+                        "input_press",
+                        InputPayload {
                             mode: String::from(s),
                             message: String::from(s1),
                         },
                     ) {
                         eprintln!("Error while emitting key event: {:?}", err);
                     }
-                })
+                });
             });
 
             Ok(())
