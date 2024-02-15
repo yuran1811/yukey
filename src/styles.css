@@ -23,7 +23,7 @@
   }
 
   body {
-    @apply flexcenter overflow-hidden;
+    @apply flexcenter h-[230px] overflow-hidden;
   }
 }
 
