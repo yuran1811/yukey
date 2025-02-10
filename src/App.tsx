@@ -1,16 +1,18 @@
 import { listen } from '@tauri-apps/api/event';
-import { appWindow } from '@tauri-apps/api/window';
-import { useEffect, useState } from 'react';
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Key, ModifierKeys, TitleBar } from '@/components';
+import type { KeyPressPayload, ModifierKeyType } from '@/shared';
 import {
-  ModifierKeyType,
+  CONTROL_KEYCODES,
+  SPECIAL_KEYS,
   altKeys,
-  controlKeyCodes,
   controlKeys,
   metaKeys,
+  clearedBeforeUsed,
+  notDuplicateTickers,
   shiftKeys,
-  specialKeysObj,
 } from '@/shared';
 import { useStore } from '@/store';
 import { changeTheme, cn, isFuncKey, mergeDuplicatedTicker } from '@/utils';
@@ -18,9 +20,7 @@ import { changeTheme, cn, isFuncKey, mergeDuplicatedTicker } from '@/utils';
 const appWindow = getCurrentWebviewWindow();
 
 const GLOBAL_STATE = {
-  maxCharToShow: 5,
   controlPressed: false,
-  countAppears: {} as Record<string, number>,
 };
 
 function App() {
@@ -34,85 +34,82 @@ function App() {
   }>({ raw: ['NONE'], formatted: ['NONE'] });
   const [modifierKeys, setModifierKeys] = useState<ModifierKeyType[]>([
     {
-      title: specialKeysObj.ShiftLeft,
+      title: SPECIAL_KEYS.ShiftLeft,
       id: shiftKeys,
       active: false,
     },
     {
-      title: specialKeysObj.ControlLeft,
+      title: SPECIAL_KEYS.ControlLeft,
       id: controlKeys,
       active: false,
     },
-    { title: specialKeysObj.Alt, id: altKeys, active: false },
     {
-      title: specialKeysObj.MetaLeft,
+      title: SPECIAL_KEYS.Alt,
+      id: altKeys,
+      active: false,
+    },
+    {
+      title: SPECIAL_KEYS.MetaLeft,
       id: metaKeys,
       active: false,
     },
   ]);
 
-  const needTobeCleared = (message: string) =>
-    [
-      specialKeysObj.ControlLeft,
-      specialKeysObj.ControlRight,
-      specialKeysObj.MetaLeft,
-      specialKeysObj.MetaRight,
-      specialKeysObj.Alt,
-      specialKeysObj.AltGr,
-      specialKeysObj.Esc,
-    ].includes(message);
+  const updateTickers = useCallback(
+    (message: string) => {
+      setAlphabeticKeys((prevTickers) => {
+        if (prevTickers.raw.length >= 40) prevTickers.raw.shift();
 
-  const mergeDuplicatedTicker = (tickers: string[]) => {
-    const newTickers = [];
+        const charCode = message.charCodeAt(0);
 
-    const tickersLength = tickers.length;
-    for (let i = 0; i < tickersLength; i++) {
-      let countAppears = 1;
+        (charCode === 8 || charCode === 127) && (message = 'Backspace');
+        charCode === 9 && (message = 'Tab');
+        charCode === 13 && (message = 'Enter');
+        charCode === 27 && (message = 'Esc');
+        charCode === 32 && (message = SPECIAL_KEYS.Space);
+        charCode === 85 &&
+          message !== 'UpArrow' &&
+          (message = SPECIAL_KEYS.ContextMenu);
 
-      let j = i + 1;
-      for (; tickers[i] === tickers[j] && j < tickersLength; j++)
-        countAppears++;
+        GLOBAL_STATE.controlPressed &&
+          CONTROL_KEYCODES[charCode] &&
+          (message = CONTROL_KEYCODES[charCode]);
 
-      newTickers.push(
-        `${tickers[i]}${countAppears > 1 ? `⨯${countAppears}` : ''}`,
-      );
+        const newTickers: string[] = [];
 
-      i = j - 1;
-    }
+        if (
+          !notDuplicateTickers.includes(message) &&
+          !clearedBeforeUsed.includes(message)
+        ) {
+          newTickers.splice(0, 0, ...prevTickers.raw, message);
+        }
 
-    return newTickers;
-  };
+        if (message in SPECIAL_KEYS || isFuncKey(message)) {
+          message = isFuncKey(message) ? message : SPECIAL_KEYS[message];
 
-  const updateTickers = (message: string) => {
-    setAlphabeticKeys((prevTickers) => {
-      const charCode = message.charCodeAt(0);
+          newTickers.splice(
+            0,
+            newTickers.length,
+            ...(!notDuplicateTickers.includes(message) &&
+            !clearedBeforeUsed.includes(message) &&
+            !isFuncKey(message) &&
+            prevTickers.raw.every((key) => key === message)
+              ? prevTickers.raw
+              : []),
+            message,
+          );
+        }
 
-      charCode === 8 && (message = specialKeysObj.Backspace);
-      charCode === 9 && (message = specialKeysObj.Tab);
-      charCode === 13 && (message = specialKeysObj.Enter);
-      charCode === 27 && (message = specialKeysObj.Esc);
-      charCode === 32 && (message = specialKeysObj.Space);
-      charCode === 85 && (message = specialKeysObj.ContextMenu);
-
-      GLOBAL_STATE.controlPressed &&
-        controlKeyCodes[charCode] &&
-        (message = controlKeyCodes[charCode]);
-
-      message in specialKeysObj && (message = specialKeysObj[message]);
-
-      let newTickers = [message];
-      if (!needTobeCleared(message)) {
-        newTickers = [...prevTickers.raw, message];
-      }
-      const newTickersFormatted = mergeDuplicatedTicker(newTickers);
-
-      // const currentLength = newTickers.length;
-
-      // currentLength > maxTickerLength && newTickers.shift();
-
-      return { raw: newTickers, formatted: newTickersFormatted };
-    });
-  };
+        return {
+          raw: newTickers,
+          formatted: settings.mergeDuplicates
+            ? mergeDuplicatedTicker(newTickers)
+            : newTickers,
+        };
+      });
+    },
+    [settings.autoClear, settings.mergeDuplicates, settings.maxCharToShow],
+  );
 
   const updateModifierActiveStatus = (message: string, status: boolean) => {
     setModifierKeys((modifierKeys) => {
@@ -139,22 +136,30 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
+    const unlistenKeyPayload = listen<KeyPressPayload>(
+      'input-press',
+      ({ payload }) => {
+        const { mode, message } = payload;
 
-      if (mode === 'Some') {
-        updateTickers(message);
-      }
+        if (mode === 'Some') {
+          updateTickers(message);
+        }
 
-      if (mode === 'KeyPress') {
-        updateControlPressedStatus(message, true);
-        updateTickers(message);
-        updateModifierActiveStatus(message, true);
-      }
+        if (mode === 'KeyPress') {
+          updateModifierActiveStatus(message, true);
+          updateControlPressedStatus(message, true);
+          updateTickers(message);
+        }
 
-      if (mode === 'KeyRelease') {
-        updateControlPressedStatus(message, false);
-        updateModifierActiveStatus(message, false);
-      }
-    });
+        if (mode === 'KeyRelease') {
+          updateControlPressedStatus(message, false);
+          updateModifierActiveStatus(message, false);
+        }
+
+        if (mode === 'ButtonPress') {
+        }
+      },
+    );
 
     return () => {
       unlistenKeyPayload && unlistenKeyPayload.then((stop) => stop());

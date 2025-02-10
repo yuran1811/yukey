@@ -9,7 +9,27 @@ export const MOUSE_BUTTONS: Record<string, number> = {
   Right: 1,
 };
 
-export const SPECIAL_KEYS: Record<string, string> = {
+export const ARROW_KEYS: Record<string, string> = {
+  UpArrow: '↑',
+  DownArrow: '↓',
+  LeftArrow: '←',
+  RightArrow: '→',
+};
+
+export const MODIFIER_KEYS: Record<string, string> = {
+  Control: '⌃',
+  ControlLeft: '⌃',
+  ControlRight: '⌃',
+  Alt: '⌥',
+  AltGr: '⌥',
+  Shift: '⇧',
+  ShiftLeft: '⇧',
+  ShiftRight: '⇧',
+  MetaLeft: '⊞',
+  MetaRight: '⊞',
+};
+
+export const OTHER_KEYS: Record<string, string> = {
   PrintScreen: '⎙',
   ScrollLock: 'ScrLk',
   Pause: 'Pause',
@@ -21,29 +41,21 @@ export const SPECIAL_KEYS: Record<string, string> = {
   PageUp: '⇞',
   PageDown: '⇟',
 
-  UpArrow: '↑',
-  DownArrow: '↓',
-  LeftArrow: '←',
-  RightArrow: '→',
-
   Esc: '⎋',
   Backspace: '⌫',
   Enter: '↵',
-  Space: '␣',
+
   Tab: '⇆',
   CapsLock: '⇪',
-  Control: '⌃',
-  ControlLeft: '⌃',
-  ControlRight: '⌃',
-  Alt: '⌥',
-  AltGr: '⌥',
-  Shift: '⇧',
-  ShiftLeft: '⇧',
-  ShiftRight: '⇧',
-  MetaLeft: '⊞',
-  MetaRight: '⊞',
   ContextMenu: '≣',
+};
 
+export const SPECIAL_KEYS: Record<string, string> = {
+  ...MODIFIER_KEYS,
+  ...ARROW_KEYS,
+  ...OTHER_KEYS,
+
+  Space: '␣',
   Minus: '-',
   Equal: '=',
   SemiColon: ';',
@@ -86,4 +98,20 @@ export const CONTROL_KEYCODES = [
   ']',
   '^',
   '_',
+];
+
+export const notDuplicateTickers = [
+  ...Object.values(MODIFIER_KEYS),
+  SPECIAL_KEYS.Backspace,
+  SPECIAL_KEYS.Delete,
+  SPECIAL_KEYS.Insert,
+  SPECIAL_KEYS.ScrLk,
+  SPECIAL_KEYS.Pause,
+];
+
+export const clearedBeforeUsed = [
+  ...Object.values(MODIFIER_KEYS),
+  SPECIAL_KEYS.Tab,
+  SPECIAL_KEYS.Enter,
+  SPECIAL_KEYS.Esc,
 ];
