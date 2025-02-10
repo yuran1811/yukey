@@ -1,25 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import type { ThemeVariants } from '@/shared';
+
 interface SettingsType {
   alwaysOnTop: boolean;
   isMinimalUI: boolean;
   maxCharToShow: number;
   mergeDuplicates: boolean;
+  autoClear: boolean;
 }
-
-type ThemeVariants =
-  | 'light'
-  | 'dark'
-  | 'slate'
-  | 'red'
-  | 'orange'
-  | 'yellow'
-  | 'green'
-  | 'blue'
-  | 'violet'
-  | 'sakura'
-  ;
 
 interface StoreType {
   settings: SettingsType;
@@ -37,6 +27,7 @@ export const useStore = create<StoreType>()(
         isMinimalUI: false,
         maxCharToShow: 5,
         mergeDuplicates: true,
+        autoClear: false,
       },
       setSettings: (settings) => set({ settings }),
 

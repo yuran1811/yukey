@@ -8,7 +8,7 @@ import {
   SettingIcon,
 } from '@/components/icons';
 import { cn } from '@/utils';
-import { Tooltip } from '..';
+import { SettingsPanel, ThemePanel, Tooltip } from '..';
 
 interface TitleBarProps {
   state: {
@@ -31,7 +31,7 @@ export const TitleBar = ({
   });
 
   return (
-    <div className="z-10 my-1 flex w-full translate-y-1/2 flex-row-reverse gap-3 opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+    <div className="z-4 m-1 flex translate-y-1/2 flex-row-reverse gap-3 rounded-2xl bg-[hsl(var(--background))]/80 p-2 opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
       <button onClick={closeAction} className="btn-close group/tooltip">
         <Tooltip text="Close" />
         <CloseIcon />
@@ -50,25 +50,37 @@ export const TitleBar = ({
         <PinIcon />
       </button>
 
-      <button
-        className="btn-theme group/tooltip"
-        onClick={() =>
-          setOpenPanels({ ...openPanels, theme: !openPanels.theme })
-        }
-      >
-        <Tooltip text="Theme" />
-        <ColorPaletteIcon />
-      </button>
+      {!isMinimalUI && (
+        <>
+          <button
+            className="btn-theme group/tooltip"
+            onClick={() =>
+              setOpenPanels({ ...openPanels, theme: !openPanels.theme })
+            }
+          >
+            <Tooltip text="Theme" />
+            <ColorPaletteIcon />
+          </button>
+          <ThemePanel
+            showModal={openPanels.theme}
+            closeAction={() => setOpenPanels({ ...openPanels, theme: false })}
+          />
 
-      <button
-        className="btn group/tooltip"
-        onClick={() =>
-          setOpenPanels({ ...openPanels, setting: !openPanels.setting })
-        }
-      >
-        <Tooltip text="Settings" />
-        <SettingIcon />
-      </button>
+          <button
+            className="menu-item-style group/tooltip"
+            onClick={() =>
+              setOpenPanels({ ...openPanels, setting: !openPanels.setting })
+            }
+          >
+            <Tooltip text="Settings" />
+            <SettingIcon />
+          </button>
+          <SettingsPanel
+            showModal={openPanels.setting}
+            closeAction={() => setOpenPanels({ ...openPanels, setting: false })}
+          />
+        </>
+      )}
     </div>
   );
 };

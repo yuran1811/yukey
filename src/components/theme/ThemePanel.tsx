@@ -1,9 +1,15 @@
 import { ThemePicker } from '..';
+import { Modal } from '../ui/Modal';
 
-export const ThemePanel = () => {
+interface ThemePanelProps {
+  showModal: boolean;
+  closeAction: React.MouseEventHandler<HTMLElement>;
+}
+
+export const ThemePanel = ({ showModal, closeAction }: ThemePanelProps) => {
   return (
-    <div>
+    <Modal show={showModal} title="Theme" closeAction={closeAction}>
       <ThemePicker />
-    </div>
+    </Modal>
   );
 };

@@ -12,6 +12,10 @@ import {
   shiftKeys,
   specialKeysObj,
 } from '@/shared';
+import { useStore } from '@/store';
+import { changeTheme, cn, isFuncKey, mergeDuplicatedTicker } from '@/utils';
+
+const appWindow = getCurrentWebviewWindow();
 
 const GLOBAL_STATE = {
   maxCharToShow: 5,
@@ -20,7 +24,10 @@ const GLOBAL_STATE = {
 };
 
 function App() {
-  const [isAlwaysOnTop, setIsAlwaysOnTop] = useState(true);
+  const theme = useStore((state) => state.theme);
+  const settings = useStore((state) => state.settings);
+  const setSettings = useStore((state) => state.setSettings);
+
   const [alphabeticKeys, setAlphabeticKeys] = useState<{
     raw: string[];
     formatted: string[];
@@ -124,8 +131,14 @@ function App() {
   };
 
   useEffect(() => {
-    const unlisten = listen('keypress', ({ payload }) => {
-      const { mode, message } = payload as { message: string; mode: string };
+    appWindow.setAlwaysOnTop(settings.alwaysOnTop);
+  }, [settings.alwaysOnTop]);
+
+  useEffect(() => {
+    changeTheme(theme);
+  }, [theme]);
+
+  useEffect(() => {
 
       if (mode === 'Some') {
         updateTickers(message);
@@ -144,37 +157,50 @@ function App() {
     });
 
     return () => {
-      unlisten.then((stop) => stop());
+      unlistenKeyPayload && unlistenKeyPayload.then((stop) => stop());
     };
-  }, []);
+  }, [settings.autoClear, settings.mergeDuplicates, settings.maxCharToShow]);
 
   return (
     <div
       data-tauri-drag-region
-      className="ticker-container group"
+      className={cn('ticker-container group')}
       onContextMenu={(e) => e.preventDefault()}
     >
       <TitleBar
-        state={{ isPinned: isAlwaysOnTop }}
+        state={{
+          isPinned: settings.alwaysOnTop,
+          isMinimalUI: settings.isMinimalUI,
+        }}
         callbacks={{
           closeAction: () => appWindow.close(),
-          hideAction: () => appWindow.hide(),
-          pinAction: () => {
-            setIsAlwaysOnTop(!isAlwaysOnTop);
-            appWindow.setAlwaysOnTop(isAlwaysOnTop);
-          },
+          hideAction: () =>
+            setSettings({
+              ...settings,
+              isMinimalUI: !settings.isMinimalUI,
+            }),
+          pinAction: () =>
+            setSettings({
+              ...settings,
+              alwaysOnTop: !settings.alwaysOnTop,
+            }),
         }}
       />
 
-      <div className="tickers">
+      <div
+        className={cn(
+          'ticker-wrapper',
+          settings.isMinimalUI && 'rounded-b-2xl',
+        )}
+      >
         {alphabeticKeys.formatted
-          .slice(-GLOBAL_STATE.maxCharToShow)
+          .slice(-settings.maxCharToShow)
           .map((ticker, idx) => (
             <Key key={idx} ticker={ticker} />
           ))}
       </div>
 
-      <ModifierKeys modifierKeys={modifierKeys} />
+      <ModifierKeys isHide={settings.isMinimalUI} modifierKeys={modifierKeys} />
     </div>
   );
 }
