@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   CloseIcon,
   ColorPaletteIcon,
+  MaximizeIcon,
   MinimizeIcon,
   PinIcon,
   SettingIcon,
@@ -12,17 +13,18 @@ import { SettingsPanel, ThemePanel, Tooltip } from '..';
 
 interface TitleBarProps {
   state: {
-    isPinned: boolean;
+    isPinned?: boolean;
+    isMinimalUI?: boolean;
   };
   callbacks: {
-    pinAction?: React.MouseEventHandler<HTMLButtonElement>;
-    closeAction?: React.MouseEventHandler<HTMLButtonElement>;
-    hideAction?: React.MouseEventHandler<HTMLButtonElement>;
+    pinAction?: React.MouseEventHandler<HTMLElement>;
+    closeAction?: React.MouseEventHandler<HTMLElement>;
+    hideAction?: React.MouseEventHandler<HTMLElement>;
   };
 }
 
 export const TitleBar = ({
-  state: { isPinned },
+  state: { isPinned, isMinimalUI },
   callbacks: { pinAction, closeAction, hideAction },
 }: TitleBarProps) => {
   const [openPanels, setOpenPanels] = useState({
@@ -38,8 +40,17 @@ export const TitleBar = ({
       </button>
 
       <button onClick={hideAction} className="btn-hide group/tooltip">
-        <Tooltip text="Hide" />
-        <MinimizeIcon />
+        {isMinimalUI ? (
+          <>
+            <Tooltip text="FullUI" />
+            <MaximizeIcon />
+          </>
+        ) : (
+          <>
+            <Tooltip text="MiniUI" />
+            <MinimizeIcon />
+          </>
+        )}
       </button>
 
       <button

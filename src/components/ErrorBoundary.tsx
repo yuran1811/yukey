@@ -1,5 +1,7 @@
-import { appWindow } from '@tauri-apps/api/window';
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { Component, ErrorInfo, ReactNode } from 'react';
+
+const appWindow = getCurrentWebviewWindow();
 
 interface Props {
   children?: ReactNode;
@@ -27,16 +29,12 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div
-          className="flexcentercol h-screen"
+          data-tauri-drag-region
+          className="flexcentercol h-screen *:w-full *:flex-1 **:pointer-events-none"
           onContextMenu={(e) => e.preventDefault()}
         >
-          <div
-            data-tauri-drag-region
-            className="flexcentercol flex-1 gap-5 rounded-t-lg border-x-2 border-t-2 border-red-400 bg-red-400/25 px-8 py-6"
-          >
-            <h1 className="pointer-events-none text-white">
-              Sorry.. there was an error
-            </h1>
+          <div className="flexcentercol gap-5 rounded-t-lg border-x-2 border-t-2 border-red-400 bg-red-400/25 px-8 py-6">
+            <h1 className="text-white">Sorry... there was an error</h1>
             <div className="flexcenter gap-3">
               <button
                 className="rounded-lg border-2 border-red-400 px-2 py-1 text-red-400 transition-colors hover:bg-red-400/20 hover:text-white"
@@ -53,10 +51,7 @@ class ErrorBoundary extends Component<Props, State> {
             </div>
           </div>
 
-          <div
-            data-tauri-drag-region
-            className="w-full flex-1 rounded-b-lg border-x-2 border-b-2 border-red-400 bg-error-gif bg-cover bg-fixed"
-          />
+          <div className="bg-error-gif rounded-b-lg border-x-2 border-b-2 border-red-400 bg-cover bg-fixed" />
         </div>
       );
     }
