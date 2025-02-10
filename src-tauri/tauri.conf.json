@@ -1,56 +1,46 @@
 {
-  "build": {
-    "beforeDevCommand": "yarn dev",
-    "beforeBuildCommand": "yarn build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist"
-  },
-  "package": {
-    "productName": "YuKey",
-    "version": "0.1.0"
-  },
-  "tauri": {
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "com.yukey.app",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ]
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "yukey",
+  "version": "0.1.0",
+  "identifier": "com.yukey.app",
+  "app": {
+    "trayIcon": {
+      "title": "yukey",
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true
     },
-    "allowlist": {
-      "all": false,
-      "window": {
-        "all": false,
-        "close": true,
-        "hide": true,
-        "startDragging": true,
-        "setAlwaysOnTop": true
-      }
+    "security": {
+      "csp": null
     },
     "windows": [
       {
-        "title": "YuKey",
-        "width": 325,
-        "height": 230,
+        "title": "yukey",
+        "width": 310,
+        "height": 200,
         "center": true,
         "resizable": false,
         "decorations": false,
         "transparent": true,
-        "alwaysOnTop": true
+        "alwaysOnTop": true,
+        "useHttpsScheme": true
       }
-    ],
-    "security": {
-      "csp": null
-    },
-    "systemTray": {
-      "title": "YuKey",
-      "iconPath": "icons/icon.png",
-      "iconAsTemplate": true
-    }
+    ]
+  },
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
   }
 }
