@@ -1,0 +1,103 @@
+:root {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 5.9% 10%;
+
+  --secondary: 221 39% 11%;
+  --secondary-foreground: 216 12% 84%;
+
+  --popover: --primary-foreground;
+  --popover-foreground: --primary;
+
+  &.light,
+  &[data-theme='light'] {
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 40%;
+
+    --secondary: 221 39% 11%;
+    --secondary-foreground: 216 12% 84%;
+  }
+
+  &.dark,
+  &[data-theme='dark'] {
+    --primary: 240 10% 4%;
+    --primary-foreground: 240 6% 90%;
+
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 240 6% 90%;
+  }
+
+  &.slate,
+  &[data-theme='slate'] {
+    --primary: 222 47% 11%;
+    --primary-foreground: 240 6% 90%;
+
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 240 6% 90%;
+  }
+
+  &.red,
+  &[data-theme='red'] {
+    --primary: 0 84% 60%;
+    --primary-foreground: 0 96% 89%;
+
+    --secondary: 0 74% 42%;
+    --secondary-foreground: 0 94% 82%;
+  }
+
+  &.orange,
+  &[data-theme='orange'] {
+    --primary: 25 95% 53%;
+    --primary-foreground: 32 98% 83%;
+
+    --secondary: 17 88% 40%;
+    --secondary-foreground: 31 97% 72%;
+  }
+
+  &.yellow,
+  &[data-theme='yellow'] {
+    --primary: 45 93% 47%;
+    --primary-foreground: 53 98% 77%;
+
+    --secondary: 35 92% 33%;
+    --secondary-foreground: 50 98% 64%;
+  }
+
+  &.green,
+  &[data-theme='green'] {
+    --primary: 160 84% 39%;
+    --primary-foreground: 156 72% 67%;
+
+    --secondary: 163 94% 24%;
+    --secondary-foreground: 156 72% 67%;
+  }
+
+  &.blue,
+  &[data-theme='blue'] {
+    --primary: 217 91% 60%;
+    --primary-foreground: 213 97% 87%;
+
+    --secondary: 224 76% 48%;
+    --secondary-foreground: 212 96% 78%;
+  }
+
+  &.violet,
+  &[data-theme='violet'] {
+    --primary: 258 90% 66%;
+    --primary-foreground: 251 95% 92%;
+
+    --secondary: 263 70% 50%;
+    --secondary-foreground: 252 95% 85%;
+  }
+
+  &.sakura,
+  &[data-theme='sakura'] {
+    --primary: 330 81% 60%;
+    --primary-foreground: 326 85% 90%;
+
+    --secondary: 335 78% 42%;
+    --secondary-foreground: 327 87% 82%;
+  }
+}

@@ -1,0 +1,109 @@
+@import 'tailwindcss';
+
+@import './font.css' layer(base);
+@import './theme.css' layer(base);
+
+@custom-variant dark (&:is([data-mode="dark"] *));
+
+@theme {
+  --font-fredoka: Fredoka, Avenir, Helvetica, Arial, sans-serif;
+
+  --background-image-error-gif: url('/gifs/error.gif');
+}
+
+@utility menu-item-style {
+  @apply flexcenter relative size-8 rounded-full p-2 text-lg text-[hsl(var(--foreground))] transition-colors duration-300 hover:bg-[hsl(var(--foreground))]/20;
+}
+
+@utility main-background {
+  @apply bg-[hsl(var(--primary))]/80 text-[hsl(var(--primary-foreground))];
+}
+
+@utility flexcenter {
+  @apply flex items-center justify-center;
+}
+
+@utility flexcentercol {
+  @apply flexcenter flex-col;
+}
+
+@layer base {
+  :root {
+    @apply font-fredoka bg-transparent leading-6 font-normal text-[hsl(var(--foreground))] antialiased;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  * {
+    @apply select-none;
+
+    &::-webkit-scrollbar {
+      @apply size-0;
+    }
+  }
+
+  body {
+    @apply overflow-hidden;
+  }
+
+  button {
+    @apply !pointer-events-auto !cursor-pointer;
+  }
+
+  input {
+    @apply !pointer-events-auto;
+  }
+
+  #root {
+    @apply h-50 w-screen;
+  }
+
+  #modal-container {
+    @apply **:pointer-events-none;
+  }
+
+  .ticker-container {
+    @apply relative flex h-full flex-col text-lg **:pointer-events-none;
+  }
+
+  .ticker-wrapper {
+    @apply main-background flexcenter m-1 mt-0 h-full gap-1 overflow-hidden rounded-t-2xl px-6 py-6;
+  }
+
+  .modifier-keycaps {
+    @apply mx-1 grid grid-cols-4 gap-1 rounded-b-2xl;
+
+    .keycap {
+      @apply flexcenter main-background px-4 py-3 text-2xl;
+
+      &:first-child {
+        @apply rounded-bl-2xl;
+      }
+
+      &:last-child {
+        @apply rounded-br-2xl;
+      }
+    }
+  }
+
+  .btn-close {
+    @apply menu-item-style text-red-400 hover:bg-red-400/20;
+  }
+
+  .btn-hide {
+    @apply menu-item-style text-sky-400 hover:bg-sky-400/20;
+  }
+
+  .btn-theme {
+    @apply menu-item-style text-violet-400 hover:bg-violet-400/20;
+  }
+
+  .btn-pin {
+    @apply menu-item-style text-orange-400 hover:bg-orange-400/20;
+
+    &.active {
+      @apply bg-orange-400/20;
+    }
+  }
+}
