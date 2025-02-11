@@ -29,7 +29,7 @@ export const Modal = ({
         )}
       >
         <div className="m-1 flex justify-between rounded-2xl bg-[hsl(var(--background))]/80 p-2">
-          <div className="flex items-center pl-2">{title}</div>
+          <div className="flex items-center pl-2 font-medium">{title}</div>
           <div className="flex flex-row-reverse">
             <button onClick={closeAction} className="btn-close group/tooltip">
               <Tooltip text="Close" />

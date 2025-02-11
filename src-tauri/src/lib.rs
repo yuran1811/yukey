@@ -50,23 +50,18 @@ pub fn run() {
         })
         .on_menu_event(|app, event| match event.id.as_ref() {
             "quit" => {
-                println!("quit menu item was clicked");
                 app.exit(0);
             }
             "show" => {
-                println!("show menu item was clicked");
                 let window = app.get_webview_window("main").unwrap();
                 let _ = window.show();
                 let _ = window.set_focus();
             }
             "hide" => {
-                println!("hide menu item was clicked");
                 let window = app.get_webview_window("main").unwrap();
                 let _ = window.hide();
             }
-            _ => {
-                println!("menu item {:?} not handled", event.id);
-            }
+            _ => {}
         })
         .on_tray_icon_event(|tray, event| match event {
             TrayIconEvent::Click {
@@ -74,17 +69,14 @@ pub fn run() {
                 button_state: MouseButtonState::Up,
                 ..
             } => {
-                println!("left click pressed and released");
-                // in this example, let's show and focus the main window when the tray is clicked
+                // show and focus the main window when the tray is clicked
                 let app = tray.app_handle();
                 if let Some(window) = app.get_webview_window("main") {
                     let _ = window.show();
                     let _ = window.set_focus();
                 }
             }
-            _ => {
-                println!("unhandled event {event:?}");
-            }
+            _ => {}
         })
         .run(tauri::generate_context!());
 }

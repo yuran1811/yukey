@@ -3,10 +3,10 @@ import { cn } from '@/utils';
 export const Key = ({ ticker }: { ticker: string }) => (
   <div
     className={cn(
-      'grow-0 text-4xl transition-all',
+      'text-4xl transition-all min-w-max',
       ticker === 'NONE' && 'text-transparent',
     )}
   >
-    {ticker === 'NONE' ? '.' : ticker}
+    {ticker === 'NONE' ? '' : ticker}
   </div>
 );

@@ -26,3 +26,10 @@ export type ThemeItemType = {
   foreground: string;
   background: string;
 };
+
+export enum MouseButtonAction {
+  Unset = -1,
+  Left,
+  Middle,
+  Right,
+}

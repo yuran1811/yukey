@@ -9,6 +9,7 @@ interface SettingsType {
   maxCharToShow: number;
   mergeDuplicates: boolean;
   autoClear: boolean;
+  showButtonStroke: boolean;
 }
 
 interface StoreType {
@@ -28,6 +29,7 @@ export const useStore = create<StoreType>()(
         maxCharToShow: 5,
         mergeDuplicates: true,
         autoClear: false,
+        showButtonStroke: true,
       },
       setSettings: (settings) => set({ settings }),
 

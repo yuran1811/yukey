@@ -15,7 +15,7 @@
     "windows": [
       {
         "title": "yukey",
-        "width": 310,
+        "width": 304,
         "height": 200,
         "center": true,
         "resizable": false,

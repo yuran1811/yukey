@@ -8,5 +8,6 @@ export * from './theme/ThemePicker';
 export * from './ui/Key';
 export * from './ui/Modal';
 export * from './ui/ModifierKeys';
+export * from './ui/MouseButtonIndicator';
 export * from './ui/TitleBar';
 export * from './ui/Tooltip';

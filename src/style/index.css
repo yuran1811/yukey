@@ -68,7 +68,7 @@
   }
 
   .ticker-wrapper {
-    @apply main-background flexcenter m-1 mt-0 h-full gap-1 overflow-hidden rounded-t-2xl px-6 py-6;
+    @apply main-background flexcenter relative m-1 mt-0 h-full gap-1 overflow-hidden rounded-t-2xl px-6 py-6;
   }
 
   .modifier-keycaps {

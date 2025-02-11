@@ -2,15 +2,22 @@ import { listen } from '@tauri-apps/api/event';
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { useCallback, useEffect, useState } from 'react';
 
-import { Key, ModifierKeys, TitleBar } from '@/components';
-import type { KeyPressPayload, ModifierKeyType } from '@/shared';
+import {
+  Key,
+  ModifierKeys,
+  MouseButtonIndicator,
+  TitleBar,
+} from '@/components';
 import {
   CONTROL_KEYCODES,
+  KeyPressPayload,
+  ModifierKeyType,
+  MouseButtonAction,
   SPECIAL_KEYS,
   altKeys,
+  clearedBeforeUsed,
   controlKeys,
   metaKeys,
-  clearedBeforeUsed,
   notDuplicateTickers,
   shiftKeys,
 } from '@/shared';
@@ -21,6 +28,8 @@ const appWindow = getCurrentWebviewWindow();
 
 const GLOBAL_STATE = {
   controlPressed: false,
+  currentKeyTimeoutId: null as number | null,
+  currentMouseTimeoutId: null as number | null,
 };
 
 function App() {
@@ -54,11 +63,14 @@ function App() {
       active: false,
     },
   ]);
+  const [mouseButtonAction, setMouseButtonAction] = useState<MouseButtonAction>(
+    MouseButtonAction.Unset,
+  );
 
   const updateTickers = useCallback(
     (message: string) => {
       setAlphabeticKeys((prevTickers) => {
-        if (prevTickers.raw.length >= 40) prevTickers.raw.shift();
+        if (prevTickers.raw.length >= 100) prevTickers.raw.shift();
 
         const charCode = message.charCodeAt(0);
 
@@ -77,22 +89,19 @@ function App() {
 
         const newTickers: string[] = [];
 
-        if (
-          !notDuplicateTickers.includes(message) &&
-          !clearedBeforeUsed.includes(message)
-        ) {
-          newTickers.splice(0, 0, ...prevTickers.raw, message);
-        }
+        newTickers.splice(0, 0, ...prevTickers.raw, message);
 
-        if (message in SPECIAL_KEYS || isFuncKey(message)) {
-          message = isFuncKey(message) ? message : SPECIAL_KEYS[message];
+        if (message in SPECIAL_KEYS || isFuncKey(message) || !isNaN(+message)) {
+          message =
+            isFuncKey(message) || !isNaN(+message)
+              ? message
+              : SPECIAL_KEYS[message];
 
           newTickers.splice(
             0,
             newTickers.length,
             ...(!notDuplicateTickers.includes(message) &&
             !clearedBeforeUsed.includes(message) &&
-            !isFuncKey(message) &&
             prevTickers.raw.every((key) => key === message)
               ? prevTickers.raw
               : []),
@@ -154,9 +163,26 @@ function App() {
         if (mode === 'KeyRelease') {
           updateControlPressedStatus(message, false);
           updateModifierActiveStatus(message, false);
+
+          if (GLOBAL_STATE.currentKeyTimeoutId !== null)
+            clearTimeout(GLOBAL_STATE.currentKeyTimeoutId);
+          GLOBAL_STATE.currentKeyTimeoutId = setTimeout(() => {
+            updateTickers('');
+          }, 250);
         }
 
         if (mode === 'ButtonPress') {
+          if (settings.showButtonStroke) {
+            setMouseButtonAction(
+              MouseButtonAction[message as keyof typeof MouseButtonAction],
+            );
+
+            if (GLOBAL_STATE.currentMouseTimeoutId !== null)
+              clearTimeout(GLOBAL_STATE.currentMouseTimeoutId);
+            GLOBAL_STATE.currentMouseTimeoutId = setTimeout(() => {
+              setMouseButtonAction(MouseButtonAction.Unset);
+            }, 300);
+          }
         }
       },
     );
@@ -164,7 +190,12 @@ function App() {
     return () => {
       unlistenKeyPayload && unlistenKeyPayload.then((stop) => stop());
     };
-  }, [settings.autoClear, settings.mergeDuplicates, settings.maxCharToShow]);
+  }, [
+    settings.autoClear,
+    settings.mergeDuplicates,
+    settings.maxCharToShow,
+    settings.showButtonStroke,
+  ]);
 
   return (
     <div
@@ -203,6 +234,11 @@ function App() {
           .map((ticker, idx) => (
             <Key key={idx} ticker={ticker} />
           ))}
+
+        <MouseButtonIndicator
+          isHide={!settings.showButtonStroke}
+          actionType={mouseButtonAction}
+        />
       </div>
 
       <ModifierKeys isHide={settings.isMinimalUI} modifierKeys={modifierKeys} />

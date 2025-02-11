@@ -21,6 +21,7 @@ export const mergeDuplicatedTicker = (tickers: string[]) => {
     for (
       ;
       !notDuplicateTickers.includes(tickers[i]) &&
+      isNaN(+tickers[i]) &&
       tickers[i] === tickers[j] &&
       j < tickersLength;
       j++

@@ -41,10 +41,22 @@ export const SettingsPanel = ({
             })
           }
         />
+        <SettingItem
+          type="switch"
+          id={'showButtonStroke'}
+          state={settings.showButtonStroke}
+          label={'Show button stroke'}
+          onChange={() =>
+            setSettings({
+              ...settings,
+              showButtonStroke: !settings.showButtonStroke,
+            })
+          }
+        />
       </div>
 
       <div className="absolute top-0 right-0 left-0 mx-1 h-6 bg-gradient-to-b from-[hsl(var(--primary))] to-transparent" />
-      <div className="absolute right-0 bottom-0 left-0 mx-1 h-16 rounded-b-2xl bg-gradient-to-t from-[hsl(var(--primary))] to-transparent" />
+      <div className="absolute right-0 bottom-0 left-0 mx-1 h-6 rounded-b-2xl bg-gradient-to-t from-[hsl(var(--primary))] to-transparent" />
     </Modal>
   );
 };
