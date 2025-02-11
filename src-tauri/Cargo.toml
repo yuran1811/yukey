@@ -1,6 +1,6 @@
 [package]
 name = "yukey"
-version = "0.1.0"
+version = "0.1.1"
 description = "YuKey"
 authors = ["hudy9x", "yuran1811"]
 edition = "2021"
