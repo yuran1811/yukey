@@ -1,12 +1,27 @@
 # Installation
 
-- Clone the repository and install dependencies
+**Cloning the Repository**
 
 ```bash
 git clone https://github.com/yuran1811/yukey.git
 cd yukey
-yarn
 ```
+
+**Installation**
+
+- Enable `pnpm` to build and run the project
+
+```bash
+corepack enable pnpm
+```
+
+Install the project dependencies:
+
+```bash
+pnpm install
+```
+
+**Running the Project**
 
 - Build rust source
 
@@ -18,7 +33,7 @@ cargo build
 - Local development
 
 ```bash
-yarn tauri dev
+pnpm tauri dev
 ```
 
 # Build the project
@@ -26,5 +41,5 @@ yarn tauri dev
 - Run this command to build the project
 
 ```bash
-yarn tauri build
+pnpm tauri build
 ```

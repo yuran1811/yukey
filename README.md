@@ -17,11 +17,11 @@
 ## Features
 
 - [x] Record the key you're typing
-- [ ] Record the mouse button you've clicked
-- [x] Pin the app on top of the screen
+- [x] Record the mouse button you've clicked
+- [x] Pin/Unpin the app to/from the top of the screen
 - [x] Minmize to tray
-- [ ] Theme UI changing
-- [ ] Setting panel
+- [x] Theme UI changing
+- [x] Setting panel
 
 ## Tech Stack
 
@@ -30,8 +30,8 @@
 ## Screenshots
 
 <div style="display:flex;gap:12px;justify-content:center">
-    <img src="" style="width:45%;max-width:380px">
-    <img src="" style="width:45%;max-width:380px">
+    <img src="./public/screenshots/normal.png" style="width:45%;max-width:380px">
+    <img src="./public/screenshots/active.png" style="width:45%;max-width:380px">
 </div>
 
 ## Quick Start
@@ -54,35 +54,28 @@ cd yukey
 
 **Installation**
 
+- Enable `pnpm` to build and run the project
+
+```bash
+corepack enable pnpm
+```
+
 Install the project dependencies:
 
 ```bash
-npm install
-```
-
-or
-
-```bash
-yarn
+pnpm install
 ```
 
 **Running the Project**
 
 ```bash
-npm run dev
-```
-
-or
-
-```bash
-yarn dev
+pnpm dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
 
 ## References
 
-- Read the installation [here](./md/installation.md)
-- More about the project can be found [here](./md/)
-
 - **Thanks a lot to the following projects**: [hudy9x/keyreader](https://github.com/hudy9x/keyreader)
+- More about [installation](./md/installation.md)
+- More about [the project](./md/)
