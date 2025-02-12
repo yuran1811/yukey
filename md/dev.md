@@ -1,4 +1,4 @@
-# Installation
+# Developing
 
 **Cloning the Repository**
 

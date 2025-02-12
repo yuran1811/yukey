@@ -14,6 +14,10 @@
 
 <div align="center"><a href="https://github.com/yuran1811/yukey/releases" target="_blank">Releases</a></div>
 
+## Introduction
+
+`yukey` is an open source keystroke visualizer that enables you to share your **keystroke** and **mouse click actions** for presenting, recording, or collaborating with others.
+
 ## Features
 
 - [x] Record the key you're typing
@@ -34,7 +38,11 @@
     <img src="./public/screenshots/active.png" style="width:45%;max-width:380px">
 </div>
 
-## Quick Start
+## Installation
+
+Download the latest [release](https://github.com/yuran1811/yukey/releases)
+
+## Developing
 
 Follow these steps to set up the project locally on your machine.
 
@@ -74,8 +82,15 @@ pnpm dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
 
+See more about [developing](./md/dev.md)
+
 ## References
 
 - **Thanks a lot to the following projects**: [hudy9x/keyreader](https://github.com/hudy9x/keyreader)
-- More about [installation](./md/installation.md)
-- More about [the project](./md/)
+- More info about [the project](./md)
+
+## License
+
+[BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause)
+
+`yukey` has been freely available for Linux, MacOS and Windows since 2025.
