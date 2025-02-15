@@ -42,7 +42,7 @@
 
 Download the latest [release](https://github.com/yuran1811/yukey/releases)
 
-## Developing
+## Development
 
 Follow these steps to set up the project locally on your machine.
 
@@ -52,6 +52,7 @@ Make sure you have the following installed or downloaded on your machine:
 
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org/en)
+- [Rust](https://www.rust-lang.org/tools/install)
 
 **Cloning the Repository**
 
@@ -77,7 +78,7 @@ pnpm install
 **Running the Project**
 
 ```bash
-pnpm dev
+pnpm tauri dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
